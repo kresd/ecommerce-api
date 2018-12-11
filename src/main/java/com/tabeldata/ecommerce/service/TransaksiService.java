@@ -11,8 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,16 +51,16 @@ public class TransaksiService {
         for (TransaksiDetails detail : details) {
             detail.setTransaksi(transaksi);
             transaksiDetailRepository.save(detail);
-            produkRepository.updateStockPembelian(detail.getProduk().getIdProduk(), 1);
+            produkRepository.updateStockPembelian(detail.getProduk().getIdProduk(), transaksi.getJumlahBarang());
         }
         return transaksi;
     }
 
     @Transactional
     public Transaksi pembatalanProduk(Transaksi transaksi) {
-        repository.pembatalanTransaksi(transaksi.getIdTrx(), Timestamp.valueOf(LocalDateTime.now()));
+        repository.pembatalanTransaksi(transaksi.getIdTrx(), Boolean.valueOf(true));
         for (TransaksiDetails detail : transaksi.getDetails()) {
-            produkRepository.updateStockPembatalan(detail.getProduk().getIdProduk(), 1);
+            produkRepository.updateStockPembatalan(detail.getProduk().getIdProduk(), transaksi.getJumlahBarang());
         }
         return transaksi;
     }

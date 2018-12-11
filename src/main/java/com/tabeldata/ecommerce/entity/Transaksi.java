@@ -31,6 +31,10 @@ public class Transaksi {
     @JoinColumn(name = "produk_id")
     private Produk idProduk;
 
+    @ManyToOne
+    @JoinColumn(name = "toko_id")
+    private Toko idToko;
+
     @Column(name = "jumlah_barang")
     private int jumlahBarang;
 
@@ -46,9 +50,6 @@ public class Transaksi {
 
     @Column(name = "is_cancel", nullable = false)
     private boolean pembatalan;
-
-    @Column(name = "tanggal_pembatalan")
-    private Timestamp tanggalPembatalan;
 
     @OneToMany(mappedBy = "transaksi")
     private List<TransaksiDetails> details = new ArrayList<>();
